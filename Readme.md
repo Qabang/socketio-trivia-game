@@ -1,7 +1,7 @@
 # Trivia Game with Socket.io
 
 A small trivia game I built as my project in the course about socket.io.
-The game uses the Open Trivia Databases (https://opentdb.com) API for the questions and the ansewrs.
+The game uses the Open Trivia Databases (https://opentdb.com) API for the questions and the answers.
 
 ## Set up project
 
