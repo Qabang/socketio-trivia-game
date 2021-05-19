@@ -1,0 +1,33 @@
+.btn-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+#player-score {
+  font-weight: 900;
+}
+
+#question {
+  font-size: 1.5rem;
+  margin: 20px;
+  text-align: center;
+}
+
+.question {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+#timer {
+  font-size: 1.2rem;
+  color: rgb(68, 61, 61);
+}
+
+#player-status-container {
+  font-style: italic;
+}
+
+#player-status {
+  color: darkolivegreen;
+  font-weight: bold;
+}

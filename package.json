@@ -1,0 +1,23 @@
+{
+  "name": "socketio-trivia-game",
+  "version": "1.0.0",
+  "description": "slutuppgift för socket.io kapitlet i kursen databasutveckling. Ett litet trivia spel.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "trivia",
+    "socket.io",
+    "express"
+  ],
+  "author": "Sandra Lindström",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "express": "^4.17.1",
+    "shuffle-array": "^1.0.1",
+    "socket.io": "^4.1.1"
+  }
+}
