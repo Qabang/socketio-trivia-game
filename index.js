@@ -20,8 +20,23 @@ let gameRunning = false
 app.use(express.static('public'))
 
 // Global Game timer
-const gameInterval = setInterval(() => {
+const gameInterval = setInterval(async () => {
   time--
+  if (time === 3) {
+    await axios
+      .get(url)
+      .then(function (response) {
+        if (response.status === 200) {
+          gameQuestions = []
+          gameQuestions = response.data.results
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+  }
+
   if (time === 0) {
     time = 20
     io.emit('updateTimeStart', time)
@@ -59,7 +74,7 @@ io.on('connection', (socket) => {
     gameRunning = true
   })
 
-  socket.on('StartGame', () => {
+  socket.on('StartGame', async () => {
     gameRunning = true
 
     let spectators = io.sockets.adapter.rooms.get('Spectator')
@@ -86,23 +101,13 @@ io.on('connection', (socket) => {
       io.emit('showAmountOfPlayers', clients.size)
     }
 
-    axios
-      .get(url)
-      .then(function (response) {
-        if (response.status === 200) {
-          gameQuestions = response.data.results
+    if (gameQuestions.length > 0) {
+      // Get data relevant for the player and shuffle answers. (We want no cheating)
+      let playerQuestionsData = manipulateData(gameQuestions, [])
 
-          // Get data relevant for the player and shuffle answers. (We want no cheating)
-          let playerQuestionsData = manipulateData(gameQuestions, [])
-
-          // emit questions
-          io.in('Game').emit('getQuestions', playerQuestionsData)
-        }
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error)
-      })
+      // emit questions
+      io.in('Game').emit('getQuestions', playerQuestionsData)
+    }
   })
 
   // Waiting lobby if the game is already running when client connects.
@@ -114,7 +119,7 @@ io.on('connection', (socket) => {
   socket.on('Validate', (btn_value, question_nr) => {
     let correct = gameQuestions[question_nr].correct_answer.toString()
 
-    // Convert answer to htmlencoded string to be able to compare the value with
+    // Convert answer to html encoded string to be able to compare the value with
     // the correct answer from the API.
     btn_value = btn_value.replace(/[\u00A0-\u9999<>\&]/g, function (i) {
       return '&#' + i.charCodeAt(0) + ';'
@@ -143,7 +148,6 @@ io.on('connection', (socket) => {
       io.emit('showAmountOfPlayers', connectedPlayers.size)
     }
 
-    gameQuestions = []
     gameRunning = false
     io.emit('DisplayScore', points)
   })
@@ -177,15 +181,4 @@ function manipulateData(gameQuestions, newData) {
     }
   }
   return newData
-}
-
-/**
- *
- * @param {string} html html encoded string
- * @returns decoded html string.
- */
-function decodeHTML(html) {
-  var txt = document.createElement('textarea')
-  txt.innerHTML = html
-  return txt.value
 }

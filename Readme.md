@@ -7,12 +7,12 @@ The game uses the Open Trivia Databases (https://opentdb.com) API for the questi
 
 Run the command in the root folder.
 
-- `npm install`.
+- `npm install`
 
 ## Run the application
 
 When you are done with the import run the following commands in the root folder:
 
-- `npm run dev`.
+- `npm run dev`
 
 If no errors occured you can visit the application at [http://localhost:3000](http://localhost:3000/)
